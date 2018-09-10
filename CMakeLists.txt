@@ -27,6 +27,11 @@ if (UNIX OR ARM7)
 	endif()
 endif ()
 
+set(CMAKE_MODULE_PATH /usr/local/lib/cmake)
+
+find_package(raspicam REQUIRED)
+
+
 set(CMAKE_BUILD_TYPE release)
 set (CMAKE_CXX_STANDARD 11)
 add_definitions(-fPIC)
@@ -37,4 +42,4 @@ include_directories(${OpenCV_DIR}/include)
 include_directories(${NCNN_DIR}/include)
 
 add_executable(mtcnn ${SRC})
-TARGET_LINK_LIBRARIES (mtcnn ${OpenCV_LIBS} ${NCNN_LIBS})
+TARGET_LINK_LIBRARIES (mtcnn ${OpenCV_LIBS} ${NCNN_LIBS} ${raspicam_CV_LIBS})
