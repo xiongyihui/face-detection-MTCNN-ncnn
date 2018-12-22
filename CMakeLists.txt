@@ -37,4 +37,4 @@ include_directories(${OpenCV_DIR}/include)
 include_directories(${NCNN_DIR}/include)
 
 add_executable(mtcnn ${SRC})
-TARGET_LINK_LIBRARIES (mtcnn ${OpenCV_LIBS} ${NCNN_LIBS})
+TARGET_LINK_LIBRARIES (mtcnn ${OpenCV_LIBS} ${NCNN_LIBS} paho-mqtt3c)
