@@ -1,14 +1,17 @@
 #include <iostream>
 
-#include "opencv2/core/core.hpp"
-#include "opencv2/highgui/highgui.hpp"
-#include "opencv2/imgproc.hpp"
+//#include "opencv2/core/core.hpp"
+//#include "opencv2/highgui/highgui.hpp"
+//#include "opencv2/imgproc.hpp"
+
+#include "opencv2/opencv.hpp"
+
 #include "Mtcnn.h"
 
 using namespace std;
 using namespace cv;
 
-void PlotDetectionResult(const Mat& frame, const std::vector<SMtcnnFace>& bbox)
+void PlotDetectionResult(Mat& frame, const std::vector<SMtcnnFace>& bbox)
 {
     for (auto it = bbox.begin(); it != bbox.end(); it++)
     {
@@ -62,10 +65,11 @@ int main(int argc, char** argv)
         sumMs += t;
         ++count;
         cout << "time = " << t << " ms, FPS = " << 1000 / t << ", Average time = " << sumMs / count <<endl;
-
+        cout << "faces: " << finalBbox.size() << endl;
         PlotDetectionResult(frame, finalBbox);
 
-        imshow("frame", frame);
+	imwrite("/home/pi/view.jpg", frame);
+        //imshow("frame", frame);
 
         if (waitKey(1) == 'q')
             break;
