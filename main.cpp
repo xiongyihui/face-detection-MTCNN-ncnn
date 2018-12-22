@@ -81,7 +81,7 @@ int main(int argc, char** argv)
     // MQTTClient_subscribe(client, "bus", 0);
 
     // MQTTClient_subscribe(client, "bus", 0);
-    publish(client, "bus", "xyz");
+    publish(client, "bus", "[0]");
 
     VideoCapture cap(0);
 
@@ -121,12 +121,28 @@ int main(int argc, char** argv)
         ++count;
         cout << "faces = " << finalBbox.size() << ", time = " << t << " ms, FPS = " << 1000 / t << ", Average time = " << sumMs / count <<endl;
 
-        publish(client, "bus", "0");
+        if (finalBbox.size() > 0) {
+            string msg = "[" + to_string(finalBbox.size());
+            for (auto it = finalBbox.begin(); it != finalBbox.end(); it++)
+            {
+                for (int i=0; i<4; i++) {
+                    msg += "," + to_string(it->boundingBox[i]); 
+                }
+            }
+            msg += "]";
+
+            char* c_msg = strdup(msg.c_str());
+            publish(client, "bus", c_msg);
+            free(c_msg);
+
+        } else {
+            publish(client, "bus", "[0]");
+        }
 
         PlotDetectionResult(frame, finalBbox);
 
         // imshow("frame", frame);
-        imwrite("/home/pi/view.jpg", frame);
+        imwrite("/home/pi/camera.jpg", frame);
 
         if (waitKey(1) == 'q')
             break;
